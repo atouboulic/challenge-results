@@ -16,7 +16,7 @@ git clone https://github.com/govpf/devops-challenge.git \
 git clone https://github.com/atouboulic/challenge-results.git \
 cd challenge-results \
 sh copyfiles_to_git_challenge_folder.sh \
-cd ../devops-challenge \
+cd ../devops-challenge 
 
 
 _____________________________________
@@ -27,7 +27,7 @@ _____________________________________
 
 1. Compiler l'api
 ```
-$ cd ${CHALLENGE_GIT_PATH}/api
+$ cd api
 $ mvn package -DskipTests
 ```
 
@@ -36,9 +36,10 @@ $ mvn package -DskipTests
 
 2. Compiler le frontend
 ```
-$ cd ${CHALLENGE_GIT_PATH} frontend
+$ cd frontend
 $ yarn install --frozen-lockfile 
 $ yarn build
+$ cd ..
 ```
 
 3. S'assurer que les port 5432, 8080, 80 et 4200 ne sont pas utilisés en local
@@ -48,7 +49,6 @@ $ yarn build
 Appliquer les pré-requis puis :
 
 ```
-cd ${CHALLENGE_GIT_PATH}
 docker-compose up 
 ```
 
@@ -56,18 +56,16 @@ docker-compose up
 
 ## Pour faire fonctionner l'application avec manuellement avec Docker :
 
-Appliquer les pré-requis puis :
+> Appliquer les pré-requis 
 
 ### 1. Démarrer la DB (postgres) 
 
 ```shell 
-cd ${CHALLENGE_GIT_PATH}
 docker-compose up -d db 
 ```
 
 ### 2. Build api image
 ```
-cd ${CHALLENGE_GIT_PATH}
 cd api
 docker build -t challenge-api .
 ```

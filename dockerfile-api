@@ -2,7 +2,6 @@ FROM openjdk:8-jdk-alpine
 
 LABEL name="API Docker image for Challenge" \
       description="Interacts with postgreSQL on port 5432" \
-      url="" \
       maintainer="Arnaud Touboulic"
 
 ARG JAR_FILE=target/*.jar
@@ -10,6 +9,8 @@ ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
 
 ENTRYPOINT ["java","-jar","/app.jar"]
+
+EXPOSE 8080
 
 HEALTHCHECK --interval=20s --timeout=2s --retries=5 \
 CMD ["wget","--no-verbose", "-q" ,"--spider", "--tries=1", "localhost:8080"]
