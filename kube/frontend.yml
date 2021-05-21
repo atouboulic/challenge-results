@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+    tier: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+        tier: frontend
+    spec:
+      containers:
+      - name: challenge-frontend
+        image: challenge-frontend
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80
+          - containerPort: 4200
+        env:
+          - name: API_URL
+            value: http://api:8080/

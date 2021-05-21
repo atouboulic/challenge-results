@@ -1,0 +1,45 @@
+version: '2.1'
+services:
+  db:
+    container_name: db
+    image: postgres:13.3-alpine
+    environment:
+      POSTGRES_DB: mystuff
+      POSTGRES_PASSWORD: mystuff
+      POSTGRES_USER: mystuff
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data-volume:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: api
+      dockerfile: dockerfile
+    ports:
+      - "8080:8080"
+    image: "challenge-api"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mystuff
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: dockerfile
+    ports:
+      - "4200:4200"
+      - "80:80"
+    container_name: frontend
+    image: challenge-frontend
+    environment:
+      API_URL: http://api:8080/
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  db-data-volume:

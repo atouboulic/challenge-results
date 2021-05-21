@@ -1,0 +1,25 @@
+FROM httpd:2.4-alpine
+
+LABEL name="FRONTEND Docker image for Challenge" \
+      description="Interacts with API" \
+      maintainer="Arnaud Touboulic"
+
+## API_URL is used for accessing rest services on API specified URL
+ENV API_URL=http://api:8080/
+
+COPY ./dist/mystuff /usr/local/apache2/htdocs/
+
+## Enable httpd proxy module in order to
+##  * redirect HTTP calls at *:4200/api to API_URL env variable value
+RUN sed -i 's/#LoadModule proxy_module modules/LoadModule proxy_module modules/g' /usr/local/apache2/conf/httpd.conf \
+    && sed -i 's/#LoadModule proxy_http_module/LoadModule proxy_http_module/g' /usr/local/apache2/conf/httpd.conf \
+    && echo "Listen 4200" >> /usr/local/apache2/conf/httpd.conf \
+    && echo "<VirtualHost *:*>" >> /usr/local/apache2/conf/httpd.conf \
+    && echo "    ProxyPreserveHost On" >> /usr/local/apache2/conf/httpd.conf \
+    && echo "    ProxyPass /api \${API_URL}" >> /usr/local/apache2/conf/httpd.conf \
+    && echo "    ProxyPassReverse /api \${API_URL}" >> /usr/local/apache2/conf/httpd.conf \
+    && echo "    Header set Access-Control-Allow-Origin '*'" >> /usr/local/apache2/conf/httpd.conf \
+    && echo "    Header set Access-Control-Allow-Methods '*'" >> /usr/local/apache2/conf/httpd.conf \
+    && echo "</VirtualHost> " >> /usr/local/apache2/conf/httpd.conf
+
+EXPOSE 4200

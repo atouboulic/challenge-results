@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: api
+  labels:
+    app: api
+    tier: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+      tier: api
+  template:
+    metadata:
+      labels:
+        app: api
+        tier: api
+    spec:
+      containers:
+      - name: challenge-api
+        image: challenge-api
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 5432
+        env:
+          - name: SPRING_DATASOURCE_URL
+            value: jdbc:postgresql://postgres:5432/mystuff
