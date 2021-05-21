@@ -18,7 +18,10 @@ cd challenge-results \
 sh copyfiles_to_git_challenge_folder.sh \
 cd ../devops-challenge 
 
-
+Pour tester l'application en local, il faut la démarrer en suivant un des modes d'emplois
+ci-dessous puis se connecter à l'url : http://localhost:4200 (je n'ai pas trouvé l'astuce pour éviter 
+les problemes CORS sur l'url http://localhost:80 sur les requetes OPTIONS sans modifier le code source.)
+Pour l'instance sous kubernetes, il faut se connecter a l'url http://localhost:30000
 _____________________________________
 
 # Pour faire fonctionner l'application avec docker, docker-compose ou minikube:
@@ -90,11 +93,17 @@ docker build -t challenge-frontend .
 docker run -it  --name frontend -p 80:80 --network=host challenge-frontend
 ```
 
-## Pour faire fonctionner l'application avec manuellement avec Minikube :
+______________________
 
-pré-requis : 
-* installer minikube, kubectl
-* avoir compilé l'api et le frontend auparavant
+# Pour faire fonctionner l'application avec Minikube (kubernetes) :
+
+Pré-requis : 
+
+> Installer minikube, kubectl \
+Note: si kubectl n'est pas installé, il est possible de faire "minikube kubectl" au lieu de "kubectl"
+\
+\
+Avoir compiler l'api et le frontend auparavant
 
 1. Démarrer minikube 
 
